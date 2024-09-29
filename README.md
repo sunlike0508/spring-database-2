@@ -430,6 +430,9 @@ void afterEach() {
 
 **@Transactional이 적용된 테스트 동작 방식**
 
+<img width="920" alt="Screenshot 2024-09-29 at 18 23 24" src="https://github.com/user-attachments/assets/6a007e3d-8413-479c-b808-9aecc61f53cb">
+
+
 1. 테스트에 `@Transactional` 애노테이션이 테스트 메서드나 클래스에 있으면 먼저 트랜잭션을 시작한다.
 2. 테스트 로직을 실행한다. 테스트가 끝날 때 까지 모든 로직은 트랜잭션 안에서 수행된다.
     * 트랜잭션은 기본적으로 전파되기 때문에, 리포지토리에서 사용하는 JdbcTemplate도 같은 트랜잭션을 사용한다.
@@ -656,6 +659,7 @@ implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
 
 
 
+<img width="930" alt="Screenshot 2024-09-29 at 22 46 35" src="https://github.com/user-attachments/assets/f505a039-60e4-421f-8744-099f170f422c">
 
 
 
