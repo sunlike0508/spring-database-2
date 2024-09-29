@@ -1,31 +1,44 @@
 package hello.itemservice.domain;
 
+import java.util.List;
 import hello.itemservice.repository.ItemRepository;
 import hello.itemservice.repository.ItemSearchCond;
 import hello.itemservice.repository.ItemUpdateDto;
 import hello.itemservice.repository.memory.MemoryItemRepository;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
+@Transactional
 @SpringBootTest
 class ItemRepositoryTest {
 
     @Autowired
     ItemRepository itemRepository;
+    //    TransactionStatus status;
+    //    @Autowired
+    //    private DataSourceTransactionManager transactionManager;
+
+
+    //    @BeforeEach
+    //    void beforeEach() {
+    //        status = transactionManager.getTransaction(new DefaultTransactionDefinition());
+    //    }
+
 
     @AfterEach
     void afterEach() {
         //MemoryItemRepository 의 경우 제한적으로 사용
-        if (itemRepository instanceof MemoryItemRepository) {
+        if(itemRepository instanceof MemoryItemRepository) {
             ((MemoryItemRepository) itemRepository).clearStore();
         }
+
+        //transactionManager.rollback(status);
     }
+
 
     @Test
     void save() {
@@ -39,6 +52,7 @@ class ItemRepositoryTest {
         Item findItem = itemRepository.findById(item.getId()).get();
         assertThat(findItem).isEqualTo(savedItem);
     }
+
 
     @Test
     void updateItem() {
@@ -57,6 +71,7 @@ class ItemRepositoryTest {
         assertThat(findItem.getPrice()).isEqualTo(updateParam.getPrice());
         assertThat(findItem.getQuantity()).isEqualTo(updateParam.getQuantity());
     }
+
 
     @Test
     void findItems() {
@@ -84,6 +99,7 @@ class ItemRepositoryTest {
         //둘 다 있음 검증
         test("itemA", 10000, item1);
     }
+
 
     void test(String itemName, Integer maxPrice, Item... items) {
         List<Item> result = itemRepository.findAll(new ItemSearchCond(itemName, maxPrice));
