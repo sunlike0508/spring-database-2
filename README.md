@@ -796,15 +796,16 @@ Repository 인터페이스를 상속 받은 PagingAndSortingRepository 인터페
 
 **다른 선택**
 
-<img width="708" alt="Screenshot 2024-10-01 at 20 57 30" src="https://github.com/user-attachments/assets/a237cfb1-56f9-415e-b186-ee6e8bc293ae">
-
 여기서 완전히 다른 선택을 할 수도 있다.
 
 `ItemService` 코드를 일부 고쳐서 직접 스프링 데이터 JPA를 사용하는 방법이다.
 
 DI, OCP 원칙을 포기하는 대신에, 복잡한 어댑터를 제거하고, 구조를 단순하게 가져갈 수 있는 장점이 있다.
 
-ItemService` 에서 스프링 데이터 JPA로 만든 리포지토리를 직접 참조한다. 물론 이 경우 `ItemService` 코드를 변경해야 한다.
+<img width="708" alt="Screenshot 2024-10-01 at 20 57 30" src="https://github.com/user-attachments/assets/a237cfb1-56f9-415e-b186-ee6e8bc293ae">
+
+
+`ItemService` 에서 스프링 데이터 JPA로 만든 리포지토리를 직접 참조한다. 물론 이 경우 `ItemService` 코드를 변경해야 한다.
 
 <img width="693" alt="Screenshot 2024-10-01 at 20 57 48" src="https://github.com/user-attachments/assets/5e0a8f63-f94e-4bca-9598-b6183360032b">
 
