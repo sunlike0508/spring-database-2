@@ -833,11 +833,55 @@ DI, OCP를 지키기 위해 어댑터를 도입하고, 더 많은 코드를 유�
 
 그리고 현재 상황에 맞는 선택을 하는 개발자가 좋은 개발자라 생각한다.
 
+## 실용적인 구조
 
+`ItemRepositoryV2` 는 스프링 데이터 JPA의 기능을 제공하는 리포지토리이다.
 
+`ItemQueryRepositoryV2` 는 Querydsl을 사용해서 복잡한 쿼리 기능을 제공하는 리포지토리이다.
 
+이렇게 둘을 분리하면 기본 CRUD와 단순 조회는 스프링 데이터 JPA가 담당하고, 복잡한 조회 쿼리는 Querydsl이 담당하게 된다.
 
+물론 `ItemService` 는 기존 `ItemRepository` 를 사용할 수 없기 때문에 코드를 변경해야 한다.
 
+## 다양한 데이터 접근 기술 조합
+
+JPA, 스프링 데이터 JPA, Querydsl은 모두 JPA 기술을 사용하는 것이기 때문에 트랜잭션 매니저로`JpaTransactionManager` 를 선택하면 된다.
+
+해당 기술을 사용하면 스프링 부트는 자동으로 `JpaTransactionManager` 를 스프링 빈에 등록한다.
+
+그런데 `JdbcTemplate` , `MyBatis` 와 같은 기술들은 내부에서 JDBC를 직접 사용하기 때문에 `DataSourceTransactionManager` 를 사용한다.
+
+따라서 JPA와 JdbcTemplate 두 기술을 함께 사용하면 트랜잭션 매니저가 달라진다.
+
+결국 트랜잭션을 하나로 묶을 수 없는 문제가 발생할 수 있다. 그런데 이 부분은 걱정하지 않아도 된다.
+
+**JpaTransactionManager의 다양한 지원**
+
+`JpaTransactionManager` 는 놀랍게도 `DataSourceTransactionManager` 가 제공하는 기능도 대부분 제공한다.
+
+JPA라는 기술도 결국 내부에서는 DataSource와 JDBC 커넥션을 사용하기 때문이다.
+
+따라서 `JdbcTemplate` , `MyBatis` 와 함께 사용할 수 있다.
+
+결과적으로 `JpaTransactionManager` 를 하나만 스프링 빈에 등록하면, JPA, JdbcTemplate, MyBatis 모두를 하나의 트랜잭션으로 묶어서 사용할 수 있다.
+
+물론 함께 롤백도 할 수 있다.
+
+**주의점**
+
+이렇게 JPA와 JdbcTemplate을 함께 사용할 경우 JPA의 플러시 타이밍에 주의해야 한다.
+
+JPA는 데이터를 변경하면 변경 사항을 즉시 데이터베이스에 반영하지 않는다.
+
+기본적으로 트랜잭션이 커밋되는 시점에 변경 사항을 데이터베이스 에 반영한다.
+
+그래서 하나의 트랜잭션 안에서 JPA를 통해 데이터를 변경한 다음에 JdbcTemplate을 호출하는 경우 JdbcTemplate에서는 JPA가 변경한 데이터를 읽기 못하는 문제가 발생한다.
+
+이 문제를 해결하려면 JPA 호출이 끝난 시점에 JPA가 제공하는 플러시라는 기능을 사용해서 JPA의 변경 내역을 데이 터베이스에 반영해주어야 한다.
+
+그래야 그 다음에 호출되는 JdbcTemplate에서 JPA가 반영한 데이터를 사용할 수 있 다.
+
+참고로 방금 설명한 JPA 플러시에 대한 부분은 JPA를 학습해야 이해할 수 있다. 지금은 `JpaTransactionManager` 를 사용해서 여러 데이터 접근 기술들을 함께 사용할 수 있다는 점만 기억하자.
 
 
 
