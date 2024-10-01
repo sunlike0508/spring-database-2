@@ -746,6 +746,8 @@ JPA는 `PersistenceException` 과 그 하위 예외를 발생시킨다.
 
 **@Repository의 기능**
 
+<img width="926" alt="Screenshot 2024-10-01 at 11 20 29" src="https://github.com/user-attachments/assets/5dbe60f1-1666-4336-b7f9-ba5a27459545">
+
 `@Repository` 가 붙은 클래스는 컴포넌트 스캔의 대상이 된다.
 
 `@Repository` 가 붙은 클래스는 예외 변환 AOP의 적용 대상이 된다.
@@ -753,6 +755,8 @@ JPA는 `PersistenceException` 과 그 하위 예외를 발생시킨다.
 스프링과 JPA를 함께 사용하는 경우 스프링은 JPA 예외 변환기 ( `PersistenceExceptionTranslator` )를 등록한다.
 
 예외 변환 AOP 프록시는 JPA 관련 예외가 발생하면 JPA 예외 변환기를 통해 발생한 예외를 스프링 데이터 접근 예외로 변환한다.
+
+<img width="937" alt="Screenshot 2024-10-01 at 11 21 04" src="https://github.com/user-attachments/assets/53860b3b-5e4b-4afc-a63a-f094c2a13771">
 
 결과적으로 리포지토리에 `@Repository` 애노테이션만 있으면 스프링이 예외 변환을 처리하는 AOP를 만들어준다.
 
