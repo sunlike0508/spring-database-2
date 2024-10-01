@@ -762,6 +762,13 @@ JPA는 `PersistenceException` 과 그 하위 예외를 발생시킨다.
 
 `EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible()` 이다.
 
+# Spring Data JPA
+
+Repository 인터페이스를 상속 받은 CrudRepository 인터페이스
+
+Repository 인터페이스를 상속 받은 PagingAndSortingRepository 인터페이스
+
+이거 두 개를 상속 받은게 JpaRepository
 
 
 
