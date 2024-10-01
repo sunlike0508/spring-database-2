@@ -783,3 +783,33 @@ Repository 인터페이스를 상속 받은 PagingAndSortingRepository 인터페
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
