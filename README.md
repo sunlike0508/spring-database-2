@@ -782,6 +782,8 @@ Repository 인터페이스를 상속 받은 PagingAndSortingRepository 인터페
 
 **고민**
 
+<img width="692" alt="Screenshot 2024-10-01 at 20 55 28" src="https://github.com/user-attachments/assets/1f20e6d2-24e3-42a4-adb7-c213ff6726d6">
+
 구조를 맞추기 위해서, 중간에 어댑터가 들어가면서 전체 구조가 너무 복잡해지고 사용하는 클래스도 많아지는 단점이 생겼다.
 
 실제 이 코드를 구현해야하는 개발자 입장에서 보면 중간에 어댑터도 만들고, 실제 코드까지 만들어야 하는 불편함이 생긴다.
@@ -790,9 +792,11 @@ Repository 인터페이스를 상속 받은 PagingAndSortingRepository 인터페
 
 그러니까 DI, OCP 원칙을 지킬 수 있다는 좋은 점이 분명히 있다.
 
-하지만 반대로 구조가 복잡해지면서 어댑터 코드와 실제 코드까지 함께 유지보수 해야 하는 어려움도 발생한다.
+하지만 반대로 구조가 복잡해지면서 어댑터 코드와 실제 코드까지 함께 유지보수 해야하는 어려움도 발생한다.
 
 **다른 선택**
+
+<img width="708" alt="Screenshot 2024-10-01 at 20 57 30" src="https://github.com/user-attachments/assets/a237cfb1-56f9-415e-b186-ee6e8bc293ae">
 
 여기서 완전히 다른 선택을 할 수도 있다.
 
@@ -801,6 +805,8 @@ Repository 인터페이스를 상속 받은 PagingAndSortingRepository 인터페
 DI, OCP 원칙을 포기하는 대신에, 복잡한 어댑터를 제거하고, 구조를 단순하게 가져갈 수 있는 장점이 있다.
 
 ItemService` 에서 스프링 데이터 JPA로 만든 리포지토리를 직접 참조한다. 물론 이 경우 `ItemService` 코드를 변경해야 한다.
+
+<img width="693" alt="Screenshot 2024-10-01 at 20 57 48" src="https://github.com/user-attachments/assets/5e0a8f63-f94e-4bca-9598-b6183360032b">
 
 **트레이드 오프**
 
