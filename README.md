@@ -696,10 +696,71 @@ JdbcTemplate이 제공하는 예외 변환 기능을 여기서 도 제공한다�
 
 마이바티스 스프링 연동 모듈이 자동으로 등록해주는 부분은 `MybatisAutoConfiguration` 클래스를 참고하 자.
 
+**복잡한 결과매핑**
 
+MyBatis도 매우 복잡한 결과에 객체 연관관계를 고려해서 데이터를 조회하는 것이 가능하다.
 
+이때는 `<association>` , `<collection>` 등을 사용한다.
 
+이 부분은 성능과 실효성에서 측면에서 많은 고민이 필요하다.
 
+JPA는 객체와 관계형 데이터베이스를 ORM 개념으로 매핑하기 때문에 이런 부분이 자연스럽지만, MyBatis에서는 들 어가는 공수도 많고, 성능을 최적화하기도 어렵다.
+
+따라서 해당기능을 사용할 때는 신중하게 사용해야 한다.
+
+# JPA
+
+스프링이 DI 컨테이너를 포함한 애플리케이션 전반의 다양한 기능을 제공한다면, JPA는 ORM 데이터 접근 기술을 제공한다.
+
+JPA는 스프링 만큼이나 방대하고, 학습해야할 분량도 많다.
+
+하지만 한번 배워두면 데이터 접근 기술에서 매우 큰 생산성 향상을 얻을 수 있다.
+
+대표적으로 JdbcTemplate이나 MyBatis 같은 SQL 매퍼 기술은 SQL을 개발자가 직접 작성 해야 하지만, JPA를 사용하면 SQL도 JPA가 대신 작성하고 처리해준다.
+
+실무에서는 JPA를 더욱 편리하게 사용하기 위해 스프링 데이터 JPA와 Querydsl이라는 기술을 함께 사용한다.
+
+중요한 것은 JPA이다.
+
+스프링 데이터 JPA, Querydsl은 JPA를 편리하게 사용하도록 도와주는 도구라 생각하면 된다.
+
+이 강의에서는 모든 내용을 다루지 않고, JPA와 스프링 데이터 JPA, 그리고 Querydsl로 이어지는 전체 그림을 볼 것 이다.
+
+그리고 이 기술들을 우리 애플리케이션에 적용하면서 자연스럽게 왜 사용해야 하는지, 그리고 어떤 장점이 있는지 이해할 수 있게 된다.
+
+이렇게 전체 그림을 보고 나면 앞으로 어떻게 공부해야 할지 쉽게 접근할 수 있을 것이다.
+
+## JPA 예외
+
+`EntityManager` 는 순수한 JPA 기술이고, 스프링과는 관계가 없다.
+
+따라서 엔티티 매니저는 예외가 발생하면 JPA 관련 예외를 발생시킨다.
+
+JPA는 `PersistenceException` 과 그 하위 예외를 발생시킨다.
+
+추가로 JPA는 `IllegalStateException` , `IllegalArgumentException` 을 발생시킬 수 있다.
+
+그렇다면 JPA 예외를 스프링 예외 추상화( `DataAccessException` )로 어떻게 변환할 수 있을까?
+
+비밀은 바로 `@Repository` 에 있다.
+
+**@Repository의 기능**
+
+`@Repository` 가 붙은 클래스는 컴포넌트 스캔의 대상이 된다.
+
+`@Repository` 가 붙은 클래스는 예외 변환 AOP의 적용 대상이 된다.
+
+스프링과 JPA를 함께 사용하는 경우 스프링은 JPA 예외 변환기 ( `PersistenceExceptionTranslator` )를 등록한다.
+
+예외 변환 AOP 프록시는 JPA 관련 예외가 발생하면 JPA 예외 변환기를 통해 발생한 예외를 스프링 데이터 접근 예외로 변환한다.
+
+결과적으로 리포지토리에 `@Repository` 애노테이션만 있으면 스프링이 예외 변환을 처리하는 AOP를 만들어준다.
+
+**참고**
+
+복잡한 과정을 거쳐서 실제 예외를 변환하는데, 실제 JPA 예외를 변환하는 코드는
+
+`EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible()` 이다.
 
 
 
